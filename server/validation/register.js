@@ -12,7 +12,11 @@ module.exports = function(data) {
   }
 
   if(Validator.isEmpty(data.login)) {
-    errors.login = 'login field is required'
+    errors.login = 'Login field is required'
+  }
+
+  if(Validator.isEmpty(data.handle)) {
+    errors.login = 'Handle field is required'
   }
 
   if(Validator.isEmpty(data.password)) {

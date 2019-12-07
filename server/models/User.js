@@ -11,9 +11,14 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  handle: {
+    type: String,
+  },
   password: {
     type: String,
-  }
+  },
+  followers: [],
+  following: []
 })
 
 module.exports = mongoose.model('User', userSchema)

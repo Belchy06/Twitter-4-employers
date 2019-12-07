@@ -2,6 +2,7 @@ const router = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const passport = require('passport')
 const validateRegister = require('../validation/register')
 const validateLogin = require('../validation/login')
 
@@ -19,19 +20,27 @@ router.route('/register')
           errors.email = 'Email is already used!'
           return res.status(404).json(errors)
         }
+        User.findOne({ handle: req.body.handle })
+          .then(user => {
+            if(user) {
+              errors.handle = "An account already exists with that handle!"
+              return res.status(404).json(errors)
+            }
 
-        bcrypt.genSalt(10, function(err, salt) {
-          bcrypt.hash(req.body.password, salt, function(err, hash) {
-            const newUser = new User({
-              email: req.body.email,
-              login: req.body.login,
-              password: hash
+            bcrypt.genSalt(10, function(err, salt) {
+              bcrypt.hash(req.body.password, salt, function(err, hash) {
+                const newUser = new User({
+                  email: req.body.email,
+                  login: req.body.login,
+                  handle: req.body.handle,
+                  password: hash
+                })
+                newUser.save()
+                  .then(newUser => res.json(newUser))
+                  .catch(err => console.log(err))
+              })
             })
-            newUser.save()
-              .then(newUser => res.json(newUser))
-              .catch(err => console.log(err))
           })
-        })
       })
 })
 
@@ -66,5 +75,16 @@ router.route('/login')
         }
       })
 })
+
+router.route('/')
+  .get(passport.authenticate('jwt', { session: false }) , (req, res) => {
+    res.json({
+      id: req.user._id,
+      email: req.user.email,
+      login: req.user.login,
+      followers: req.user.followers,
+      following: req.user.following
+    })
+  })
 
 module.exports = router
