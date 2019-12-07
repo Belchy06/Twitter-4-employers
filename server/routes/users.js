@@ -1,11 +1,13 @@
 const router = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
-const Validation = require('../validation/register')
+const jwt = require('jsonwebtoken')
+const validateRegister = require('../validation/register')
+const validateLogin = require('../validation/login')
 
 router.route('/register')
   .post((req,res) => {
-    const { isValid, errors} = Validation(req.body)
+    const { isValid, errors} = validateRegister(req.body)
 
     if(!isValid) {
       return res.status(404).json(errors)
@@ -25,12 +27,43 @@ router.route('/register')
               login: req.body.login,
               password: hash
             })
-
             newUser.save()
               .then(newUser => res.json(newUser))
               .catch(err => console.log(err))
           })
         })
+      })
+})
+
+router.route('/login')
+  .post((req,res) => {
+    const { errors, isValid } = validateLogin(req.body)
+
+    if(!isValid) {
+      return res.status(404).json(errors)
+    }
+
+    User.findOne({ email: req.body.email })
+      .then(user => {
+        if(user) {
+          bcrypt.compare(req.body.password, user.password)
+          .then(isMatch => {
+            if(isMatch) {
+              const token = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: '1h'}, function(err, token) {
+                return res.json({
+                  success: true,
+                  token: token
+                })
+              })
+            } else {
+              errors.password = 'Username or password is incorrect!'
+              return res.status(404).json(errors)
+            }
+          })
+        } else {
+          errors.email = "No user was found with email address: " + req.body.email
+          return res.status(404).json(errors)
+        }
       })
 })
 
