@@ -2,9 +2,11 @@
  const dotenv = require('dotenv')
  const mongoose = require('mongoose')
  const bodyParser = require('body-parser')
- const users = require('./routes/users')
  const cors = require('cors')
  const passport = require('passport')
+
+ const users = require('./routes/users')
+ const posts = require('./routes/posts')
 
  // Setup Environment
  dotenv.config()
@@ -22,6 +24,7 @@
  require('./config/passport')(passport)
  
  app.use('/api/users', users) 
+ app.use('/api/posts', posts)
 
  // Run App
  const PORT = process.env.PORT || 5000
