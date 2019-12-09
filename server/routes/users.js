@@ -85,6 +85,72 @@ router.route('/')
       followers: req.user.followers,
       following: req.user.following
     })
+})
+
+router.route('/follow')
+  .post(
+    passport.authenticate('jwt', { session:false }),
+    (req, res) => {
+      User.findOneAndUpdate({
+        _id: req.user._id
+      }, {
+        $push: { following: req.body.userId }        
+      }, {
+        new: true
+      }).then(user => {
+        User.findOneAndUpdate({
+          _id: req.body.userId
+        }, {
+          $push: { followers: req.user.id }
+        }, { new: true })
+        .then(user => res.json({ userId: req.body.userId }))
+        .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
+  }
+)
+
+router.route('/unfollow')
+  .post(
+    passport.authenticate('jwt', { session:false }),
+    (req, res) => {
+      User.findOneAndUpdate({
+        _id: req.user._id
+      }, {
+        $pull: { following: req.body.userId }        
+      }, {
+        new: true
+      }).then(user => {
+        User.findOneAndUpdate({
+          _id: req.body.userId
+        }, {
+          $pull: { followers: req.user.id }
+        }, { new: true })
+        .then(user => res.json({ userId: req.body.userId }))
+        .catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
+  }
+)
+
+router.route('/:id')
+  .get((req, res) => {
+    User.findById(req.params.id)
+      .then(user => {
+        if(user) {
+          return res.json({
+            _id: user._id,
+            email: user.email,
+            login: user.login,
+            handle: user.handle,
+            followers: user.followers,
+            following: user.following
+          })
+        } else {
+          return res.status(404).json({ msg: 'User not found' })
+        }
+      })
+      .catch(err => console.log(err))
   })
 
 module.exports = router
