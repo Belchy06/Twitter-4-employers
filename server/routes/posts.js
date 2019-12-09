@@ -35,4 +35,13 @@ router.route('/:userId')
       .catch(err => console.log(err))
 })
 
+router.route('/:query')
+  .post((req, res) => {
+    Post.find({ 'text': { "$regex": req.params.query, "$options": "i" } })
+    .sort({ createdAt: -1 })
+    .then(posts => res.json(posts))
+    .catch(err => console.log(err))
+  }
+)
+
 module.exports = router

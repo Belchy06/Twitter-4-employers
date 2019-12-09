@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 
 import { logoutUser } from '../../actions/authActions' 
 import Icon from '../../icons/Icons'
+import SearchForm from '../Search/SearchForm'
 
 const style = {
   root: {
@@ -106,6 +107,7 @@ class Header extends Component {
         <AppBar position="static" style={{ backgroundColor: '#78dd60', padding: 10 }}>
           <ToolBar className = { classes.space }>
             <div className = { classes.left }><Link to="/"><Icon name ="home" width={30} fill={'#fff'}/></Link></div>
+            < SearchForm />
             { isAuthenticated ? authLinks : guestLinks }
           </ToolBar>
         </AppBar>

@@ -11,6 +11,7 @@ import Login from './components/Auth/Login';
 import Main from './components/Layout/Main'
 import Profile from './components/Profile/Profile'
 import NotFound from './components/404'
+import SearchResults from './components/Search/SearchResults'
 
 import { logoutUser, getCurrentUser } from './actions/authActions'
 import setAuthHeader from './utils/setAuthHeader';
@@ -38,6 +39,7 @@ class App extends Component {
                 <Route path="/login" component={Login}/>
                 <Route path="/signup" component={Register}/>
                 <Route path="/profile/:userId" component={Profile}/>
+                <Route path="/search/:query" component={SearchResults}/>
                 <Route component={NotFound}/>
               </Switch>
             </Main>

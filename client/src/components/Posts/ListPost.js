@@ -19,7 +19,6 @@ class ListPost extends Component {
       <div>
         <AddPost/>
         { loading ? <LoadingPosts/> : items }
-        <Post/>
       </div>
     )
   }

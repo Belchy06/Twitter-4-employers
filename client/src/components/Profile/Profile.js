@@ -117,6 +117,7 @@ class Profile extends Component {
       }
     }
     
+    
     let items;
     items = list && list.map(el => <Post key={ el._id } post={ el }/>)
     let profileInfo;

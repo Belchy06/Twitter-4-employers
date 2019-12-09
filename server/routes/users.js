@@ -151,6 +151,20 @@ router.route('/:id')
         }
       })
       .catch(err => console.log(err))
-  })
+  }
+)
+
+router.route('/:query')
+  .post((req, res) => {
+    User.find({
+      $or: [
+        { handle: { "$regex": req.params.query, "$options": "i" } },
+        { login: { "$regex": req.params.query, "$options": "i" } }
+      ]
+    })
+    .then(user => res.json(user))
+    .catch(err => console.log(err))
+  }
+)
 
 module.exports = router

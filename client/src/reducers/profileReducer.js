@@ -1,6 +1,7 @@
 import {
   LOAD_PROFILE,
-  GET_PROFILE
+  GET_PROFILE,
+  SEARCH_USERS
 } from '../constants'
 
 const intialState = {
@@ -20,6 +21,12 @@ export default function ( state = intialState, action) {
           ...state,
           loading: false,
           user: action.payload
+        }
+      case SEARCH_USERS:
+        return {
+          ...state,
+          loading: false,
+          list: action.payload 
         }
     default:
       return state
