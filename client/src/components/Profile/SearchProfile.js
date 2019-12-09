@@ -2,17 +2,16 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { getPostsByUserId, getUserProfile, followUser, unfollowUser, refreshUserProfile } from '../../actions/profileActions'
-import Post from '../Posts/Post'
-import LoadingPosts from '../Posts/LoadingPosts'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
+import Link from '@material-ui/core/Link'
 
 const styles = {
   handle: {
     color: '#888',
     display: 'inline-block',
     '&:hover': {
-      textDecoration: 'none'
+      textDecoration: 'none',
     }
   },
   following: {
@@ -22,14 +21,16 @@ const styles = {
 
   },
   display: {
-   marginTop: 5,
-   marginBottom: 5
+    marginTop: 5,
+    marginBottom: 5,
+    color: "#333",
+    '&:hover': {
+      textDecoration: 'underline #333'
+    }
   },
   paper: {
-    padding: 8
-  },
-  detailBlock: {
-    display: 'flex'
+    padding: 8,
+    marginBottom: 10
   },
   detail: {
     marginRight: 5
@@ -56,76 +57,97 @@ class Profile extends Component {
     this.handleUnfollow = this.handleUnfollow.bind(this)
   }
 
+  componentDidMount() {
+    getUserProfile(this.props.targetUser)
+    getPostsByUserId(this.props.targetUser)
+  }
+
+  componentWillMount() {
+    getUserProfile(this.props.targetUser)
+    getPostsByUserId(this.props.targetUser)
+  }
+
   componentDidUpdate(oldProps) {
     if(this.props.auth.isAuthenticated) {
       if(oldProps.user && oldProps.user.following !== this.props.user.following) {
-        this.props.refreshUserProfile(this.props.match.params.userId)
+        this.props.user.following.map((id, i) => {
+          this.props.getUserProfile(id)
+        })
       }
-    }
-    
+    } 
   }
 
   handleFollow () {
-    this.props.followUser(this.props.match.params.userId)
+    this.props.followUser(this.props.profile._id)
   }
 
   handleUnfollow () {
-    this.props.unfollowUser(this.props.match.params.userId)
+    this.props.unfollowUser(this.props.profile._id)
   }
 
-  render() {
-    const { classes, loadingPosts, loadingProfile, list, auth, user, profile } = this.props
-    let followBtn
-    console.log('render')
-    
-    
-    let items;
-    items = list && list.map(el => <Post key={ el._id } post={ el }/>)
-    let profileInfo;
-    if(profile && items) {
-      profileInfo = (
-        <Paper className = { classes.paper }>
-          <h1 className = { classes.display }>
-            { profile.login }
-            { followBtn }
-          </h1>
-          <div className = { classes.handle }>@{ profile.handle }</div>
-          <div className = { classes.detailBlock }>
-            <div  className = { classes.detail }>
-              { items.length }
-              <span> posts</span>
-            </div>
-            <div  className = { classes.detail }>
-              <span className = { classes.followers }>
-                { profile.followers.length + ' ' }
-                followers
-              </span>
-            </div>
-            <div  className = { classes.detail }>
-              <span className = { classes.following }>
-                { profile.following.length + ' ' }
-                following
-              </span>
-            </div>
-          </div>
-        </Paper>
 
+  render() {
+    const { classes, loadingProfile, auth, user, profile } = this.props
+    
+    let followBtn
+    if(auth.isAuthenticated) {
+      if(user.following.indexOf(this.props.profile._id) === -1) {
+        followBtn = (
+          <span className = { classes.btnBlock }>
+            <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleFollow }>
+              Follow
+            </Button>
+          </span>
+        )
+      } else {
+        followBtn = (
+          <span className = { classes.btnBlock }>
+            <Button variant="outlined" type="" className = { classes.btnFollow }  onClick = { this.handleUnfollow }>
+              Unfollow
+            </Button>
+          </span>
+        )
+      }
+    } else {
+      followBtn = (
+        <span className = { classes.btnBlock }>
+          <Button variant="outlined" type="" className = { classes.btnFollow }  href="/login">
+            Login
+          </Button>
+        </span>
       )
+    }
+    
+    let profileInfo;
+    if(profile) {
+      console.log(this.props)
+      if(this.props.currentUserId !== this.props.targetUser) {
+        profileInfo = (
+          <Paper className = { classes.paper }>
+            <Link href = { `/profile/${this.props.targetUser}` }>
+              <h1 className = { classes.display }>
+                { profile.login }
+                { followBtn }  
+              </h1> 
+            </Link>
+            <div className = { classes.handle }>@{ profile.handle }</div> 
+            
+          </Paper>
+        )
+      } 
     }
 
     return (
       <div>
         { loadingProfile ? <div>Loading...</div> : profileInfo }
-        { loadingPosts ? <LoadingPosts/> : items}
       </div>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  loadingPosts: state.post.loading,
   list: state.post.list,
-  profile: state.profile.user,
+  //profile: '',
   loadingProfile: state.profile.loading,
   auth: state.auth,
   user: state.auth.user

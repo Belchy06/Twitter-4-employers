@@ -15,6 +15,7 @@ class ListPost extends Component {
       return (item !== null && item !== '')
     })
     const items = filtered && filtered.map(el => <Post key={el._id} post={el} />)
+    console.log(items)
     return (
       <div>
         <AddPost/>

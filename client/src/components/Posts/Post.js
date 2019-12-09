@@ -22,7 +22,7 @@ const styles = {
 		fontSize: 14
   },
   handle: {
-    color: '#736d6d',
+    color: '#888',
     paddingLeft: 5,
     display: 'inline-block',
     '&:hover': {

@@ -67,8 +67,7 @@ class Profile extends Component {
       if(oldProps.user && oldProps.user.following !== this.props.user.following) {
         this.props.refreshUserProfile(this.props.match.params.userId)
       }
-    }
-    
+    } 
   }
 
   handleFollow () {
@@ -85,6 +84,7 @@ class Profile extends Component {
 
   render() {
     const { classes, loadingPosts, loadingProfile, list, auth, user, profile } = this.props
+
     let followBtn
     if(auth.isAuthenticated) {
       if(user.following.indexOf(this.props.match.params.userId) === -1) {

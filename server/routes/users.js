@@ -162,7 +162,10 @@ router.route('/:query')
         { login: { "$regex": req.params.query, "$options": "i" } }
       ]
     })
-    .then(user => res.json(user))
+    .select("-password")
+    .then(user => {
+      return res.json(user)
+    })
     .catch(err => console.log(err))
   }
 )

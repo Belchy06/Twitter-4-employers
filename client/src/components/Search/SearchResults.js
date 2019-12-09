@@ -3,10 +3,6 @@ import { connect } from 'react-redux'
 import ListProfile from '../Profile/ListProfile'
 
 class Results extends Component {
-  componentDidMount() {
-    //this.props.searchUser(this.props.match.params.query)
-  }
-
   render() {
     console.log(this.props)
     return (
@@ -15,8 +11,8 @@ class Results extends Component {
   }
 }
 
-const mapStateToProps = (state) => (
-  console.log(state)
-)
+const mapStateToProps = (state) => ({
+  isAuthenticated: !!state.auth.isAuthenticated
+})
 
-export default (Results)
+export default Results
