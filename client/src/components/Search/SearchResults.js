@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
+import Profiles from './SearchProfiles'
 import { connect } from 'react-redux'
-import ListProfile from '../Profile/ListProfile'
 
 class Results extends Component {
   render() {
-    console.log(this.props)
     return (
-      <div><ListProfile inheritedProps = { this.props } /></div>
+      <div>
+        <h1>Searching EmployMe for: { this.props.match.params.query }</h1>
+        <Profiles query = { this.props.match.params.query }/>
+      </div>
     )
   }
 }
-
-const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.auth.isAuthenticated
-})
 
 export default Results

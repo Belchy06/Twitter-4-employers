@@ -28,6 +28,10 @@ const styles = {
     '&:hover': {
       textDecoration: 'none'
     }
+  },
+  userInfo: {
+    marginTop: 5,
+    marginBottom: 5
   }
 }
 
@@ -42,7 +46,7 @@ class Post extends Component {
             className={ classes.avatar }
           />
           <div> 
-            <h3>
+            <h3 className = { classes.userInfo }>
               <Link href = { `/profile/${post.user.id}` }
               className = { classes.link }> 
                 { post.user.login }

@@ -13,6 +13,7 @@ import Profile from './components/Profile/Profile'
 import NotFound from './components/404'
 import SearchResults from './components/Search/SearchResults'
 
+
 import { logoutUser, getCurrentUser } from './actions/authActions'
 import setAuthHeader from './utils/setAuthHeader';
 

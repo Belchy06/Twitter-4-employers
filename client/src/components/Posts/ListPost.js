@@ -9,13 +9,13 @@ class ListPost extends Component {
   componentDidMount() {
     this.props.getPosts()
   }
+
   render() {
     const { list, loading } = this.props
     var filtered = list.filter(function(item) {
       return (item !== null && item !== '')
     })
     const items = filtered && filtered.map(el => <Post key={el._id} post={el} />)
-    console.log(items)
     return (
       <div>
         <AddPost/>
