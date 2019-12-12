@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { getPostsByUserId, getUserProfile, followUser, unfollowUser, refreshUserProfile } from '../../actions/profileActions'
+import { getPosts } from '../../actions/postActions'
 import Post from '../Posts/Post'
 import LoadingPosts from '../Posts/LoadingPosts'
 import Paper from '@material-ui/core/Paper'
@@ -60,6 +61,7 @@ class Profile extends Component {
   componentDidMount() {
     this.props.getPostsByUserId(this.props.match.params.userId)
     this.props.getUserProfile(this.props.match.params.userId)
+    this.props.getPosts()
   }
 
   componentDidUpdate(oldProps) {
@@ -151,7 +153,6 @@ class Profile extends Component {
 
       )
     }
-
     return (
       <div>
         { loadingProfile ? <div>Loading...</div> : profileInfo }
@@ -161,7 +162,9 @@ class Profile extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => (
+  console.log(state),
+  {
   loadingPosts: state.post.loading,
   list: state.post.list,
   profile: state.profile.user,
@@ -170,4 +173,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user
 })
 
-export default connect(mapStateToProps, { getPostsByUserId, getUserProfile, followUser, unfollowUser, refreshUserProfile })(withStyles(styles)(Profile))
+export default connect(mapStateToProps, { getPostsByUserId, getUserProfile, followUser, unfollowUser, refreshUserProfile, getPosts })(withStyles(styles)(Profile))

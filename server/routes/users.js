@@ -83,7 +83,8 @@ router.route('/')
       email: req.user.email,
       login: req.user.login,
       followers: req.user.followers,
-      following: req.user.following
+      following: req.user.following,
+      likes: req.user.likes
     })
 })
 
@@ -144,7 +145,8 @@ router.route('/:id')
             login: user.login,
             handle: user.handle,
             followers: user.followers,
-            following: user.following
+            following: user.following,
+            likes: user.likes
           })
         } else {
           return res.status(404).json({ msg: 'User not found' })

@@ -10,7 +10,7 @@ class Profiles extends Component {
   }
 
   componentDidUpdate(oldProps) {
-    if(oldProps.query != this.props.query) {
+    if(oldProps.query !== this.props.query) {
       this.props.searchUsers(this.props.query)
     }
   }

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { GET_PROFILE, LOAD_PROFILE, SERVER_URL, GET_POSTS, LOADING_POSTS, FOLLOW, UNFOLLOW } from '../constants'
+import { GET_PROFILE, LOAD_PROFILE, SERVER_URL, GET_USERPOSTS, LOADING_POSTS, FOLLOW, UNFOLLOW } from '../constants'
 
 export const getUserProfile = (userId) => dispatch => {
   dispatch(loadProfile())
@@ -25,7 +25,7 @@ export const getPostsByUserId = (userId) => dispatch => {
   dispatch(loadPosts)
   axios.get(SERVER_URL + `api/posts/${userId}`)
     .then( res => dispatch({
-      type: GET_POSTS,
+      type: GET_USERPOSTS,
       payload: res.data
     }))
     .catch(err => console.log(err))

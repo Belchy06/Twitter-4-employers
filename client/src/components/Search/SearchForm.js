@@ -40,9 +40,9 @@ const styles = (theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 120,
+      width: 160,
       '&:focus': {
-        width: 200,
+        width: 160,
       },
     },
   },
@@ -61,6 +61,7 @@ class SearchForm extends Component {
     if(searchData.text !== '') {
       if(e.key === 'Enter') {
         this.props.history.push(`/search/${searchData.text}`)
+
       }
     }
     
@@ -71,7 +72,7 @@ class SearchForm extends Component {
     return (
       <div className = { classes.search }>
         <div className = { classes.searchIcon }>
-          <SearchIcon />
+          <SearchIcon/>
         </div>
         <InputBase
           placeholder = { 'Search ' +  APP_NAME }

@@ -37,6 +37,7 @@ const styles = {
   },
   btnBlock: {
     float: 'right',
+    display: 'block'
   },
   btnFollow: {
     backgroundColor: 'inherit',
@@ -66,17 +67,17 @@ class Profile extends Component {
   }
 
   render() {
-    const classes = this.props
+    const classes = this.props.classes
     const profile = this.props.profile
     let followBtn
     if(this.props.auth.isAuthenticated) {
       if(this.props.user.following.indexOf(this.props.profile._id) === -1) {
         followBtn = (
-          <span className = { classes.btnBlock }>
+          
             <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleFollow }>
               Follow
             </Button>
-          </span>
+
         )
       } else {
         followBtn = (
@@ -96,7 +97,7 @@ class Profile extends Component {
         <Paper className = { classes.paper }>
           <h1 className = { classes.display }>
             { profile.login }
-            { followBtn }
+            <span className = { classes.btnBlock }>{ followBtn }</span>
           </h1>
           <div className = { classes.handle }>@{ profile.handle }</div>
         </Paper>

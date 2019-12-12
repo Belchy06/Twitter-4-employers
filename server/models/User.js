@@ -18,7 +18,8 @@ const userSchema = new Schema({
     type: String,
   },
   followers: [],
-  following: []
+  following: [],
+  likes: []
 })
 
 module.exports = mongoose.model('User', userSchema)

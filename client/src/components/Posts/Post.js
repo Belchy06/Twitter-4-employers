@@ -2,6 +2,14 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Link from '@material-ui/core/Link'
+import Moment from 'moment'
+import { connect } from 'react-redux'
+import SvgIcon from '@material-ui/core/SvgIcon'
+import IconButton from '@material-ui/core/IconButton'
+import FavouriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavouriteIcon from '@material-ui/icons/Favorite';
+import Button from '@material-ui/core/Button'
+import { likePost, unlikePost } from '../../actions/postActions'
 
 const styles = {
   paper: {
@@ -19,7 +27,8 @@ const styles = {
 	time: {
 		marginTop: 5,
 		color: '#bbb',
-		fontSize: 14
+    fontSize: 14,
+    paddingLeft: 5
   },
   handle: {
     color: '#888',
@@ -32,12 +41,107 @@ const styles = {
   userInfo: {
     marginTop: 5,
     marginBottom: 5
+  },
+  like: {
+    padding: 5
+  },
+  heart: {
+    '&:hover': {
+      color: '#ff007f'
+    }
+  },
+  liked: {
+    color: '#F00'
   }
 }
 
+function timeSince(str) {
+  var date = Moment(str)
+  var seconds = Math.floor((new Date() - date) / 1000);
+  var intervalType;
+
+  var interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) {
+    intervalType = 'year';
+  } else {
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+      intervalType = 'month';
+    } else {
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        intervalType = 'day';
+      } else {
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          intervalType = "hour";
+        } else {
+          interval = Math.floor(seconds / 60);
+          if (interval >= 1) {
+            intervalType = "minute";
+          } else {
+            interval = seconds;
+            intervalType = "second";
+          }
+        }
+      }
+    }
+  }
+
+  if (interval > 1 || interval === 0) {
+    intervalType += 's';
+  }
+
+  return interval + ' ' + intervalType;
+};
+
 class Post extends Component {
+  constructor(props) {
+    super(props)
+
+    this.handleLike = this.handleLike.bind(this)
+    this.handleUnlike = this.handleUnlike.bind(this)
+  }
+
+  handleLike() {
+    this.props.likePost(this.props.post._id) 
+  }
+
+  handleUnlike() {
+    this.props.unlikePost(this.props.post._id) 
+  }
+
   render() {
-    const { classes, post } = this.props
+    const { classes, post, user, auth } = this.props
+    let socialIcons
+    console.log(this.props)
+    if(auth.isAuthenticated) {
+      if(post && user) {
+        if(post.likes.indexOf(user.id) === -1) {
+          //Like post
+          socialIcons = (
+            <span>
+              { post.likes.length }
+              <IconButton className = { classes.like } onClick = { this.handleLike }>
+              <FavouriteBorderIcon className = { classes.heart }/>
+              </IconButton>
+            </span>
+          )
+        } else {
+          //Unlike post
+          socialIcons = (
+            <span>
+              { post.likes.length }
+              <IconButton className = { classes.like } onClick = { this.handleUnlike }>
+                <FavouriteIcon className = { classes.liked }/>
+              </IconButton>
+            </span>
+          )
+        }
+      }
+    }
+      
+      
     if(typeof post !== "undefined") {
       return (
         <Paper className = { classes.paper }>
@@ -54,10 +158,13 @@ class Post extends Component {
                   @{ post.user.handle }
                 </span>
               </Link>
+              <span className = { classes.time} >
+                ·  { timeSince( post.createdAt )} ago
+              </span>
             </h3>
             { post.text }
-            <div className = { classes.time }>
-              { new Date(post.createdAt).toLocaleString() }
+            <div>
+              { socialIcons }
             </div>
           </div>
         </Paper>
@@ -70,4 +177,9 @@ class Post extends Component {
   }
 }
 
-export default withStyles(styles)(Post)
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+  auth: state.auth
+})
+
+export default connect(mapStateToProps, { likePost, unlikePost })(withStyles(styles)(Post))

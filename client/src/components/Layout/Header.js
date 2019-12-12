@@ -12,7 +12,7 @@ import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 
 import { logoutUser } from '../../actions/authActions' 
-import Icon from '../../icons/Icons'
+import SvgIcon from '@material-ui/core/SvgIcon'
 import SearchForm from '../Search/SearchForm'
 
 const style = {
@@ -30,6 +30,14 @@ const style = {
   btn: {
     paddingLeft: 10
   }
+}
+
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+    )
 }
 
 class Header extends Component {
@@ -106,7 +114,13 @@ class Header extends Component {
       <div className = {classes.root}>
         <AppBar position="static" style={{ backgroundColor: '#78dd60', padding: 10 }}>
           <ToolBar className = { classes.space }>
-            <div className = { classes.left }><Link to="/"><Icon name ="home" width={30} fill={'#fff'}/></Link></div>
+            <div className = { classes.left }>
+              <Link to='/'>
+                <IconButton aria-label="delete">
+                  <HomeIcon style={{ color: '#fff' }}/>
+                </IconButton>
+              </Link>
+            </div>
             < SearchForm />
             { isAuthenticated ? authLinks : guestLinks }
           </ToolBar>
