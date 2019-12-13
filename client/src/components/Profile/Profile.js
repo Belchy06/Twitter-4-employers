@@ -7,45 +7,56 @@ import Post from '../Posts/Post'
 import LoadingPosts from '../Posts/LoadingPosts'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
 
 const styles = {
   handle: {
-    color: '#888',
+    color: '#8899a6',
     display: 'inline-block',
     '&:hover': {
       textDecoration: 'none'
-    }
-  },
-  following: {
-
-  },
-  followers: {
-
+    },
+    fontSize: 14,
+    fontWeight: 400
   },
   display: {
    marginTop: 5,
    marginBottom: 5
   },
   paper: {
-    padding: 8
+    padding: '1rem',
+    borderRadius: 0,
+    
   },
   detailBlock: {
-    display: 'flex'
+    display: 'flex',
+    marginTop: 10
   },
   detail: {
-    marginRight: 5
+    marginRight: '1.5rem',
+    color: '#8899a6',
+    display: 'block',
+    textAlign: 'left',
+    fontWeight: 700,
+    fontSize: 12
   },
-  btnBlock: {
-    float: 'right',
+  profile: {
+    borderRadius: 0,
+    backgroundColor: '#10171e',
+    padding: '1rem',
+    'box-shadow': 'none'
+    //border: '1px solid #8899a6' ,
   },
-  btnFollow: {
-    backgroundColor: 'inherit',
-    color: '#78dd60',
-    '&:hover': {
-      color: '#fff',
-      borderColor: '#78dd60',
-      backgroundColor: '#78dd60'
-    }
+  link: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 700
+  },
+  value: {
+    color: '#19cf86',
+    fontWeight: 700,
+    fontSize: 18,
+    textAlign: 'left'
   }
 }
 
@@ -61,7 +72,6 @@ class Profile extends Component {
   componentDidMount() {
     this.props.getPostsByUserId(this.props.match.params.userId)
     this.props.getUserProfile(this.props.match.params.userId)
-    this.props.getPosts()
   }
 
   componentDidUpdate(oldProps) {
@@ -125,48 +135,30 @@ class Profile extends Component {
     let profileInfo;
     if(profile && items) {
       profileInfo = (
-        <Paper className = { classes.paper }>
-          <h1 className = { classes.display }>
+        <Paper className = { classes.profile }>
+          <div className = { classes.link }> 
             { profile.login }
-            { followBtn }
-          </h1>
-          <div className = { classes.handle }>@{ profile.handle }</div>
-          <div className = { classes.detailBlock }>
-            <div  className = { classes.detail }>
-              { items.length }
-              <span> posts</span>
-            </div>
-            <div  className = { classes.detail }>
-              <span className = { classes.followers }>
-                { profile.followers.length + ' ' }
-                followers
-              </span>
-            </div>
-            <div  className = { classes.detail }>
-              <span className = { classes.following }>
-                { profile.following.length + ' ' }
-                following
-              </span>
-            </div>
+            
           </div>
+          <div className = { classes.handle }>
+              @{ profile.handle }
+            </div>
         </Paper>
 
       )
     }
     return (
-      <div>
-        { loadingProfile ? <div>Loading...</div> : profileInfo }
-        { loadingPosts ? <LoadingPosts/> : items}
-      </div>
+      <Grid container>
+        <Grid item sm={4}>{ loadingProfile ? <div>Loading...</div> : profileInfo }</Grid>
+        <Grid item sm={7}>{ loadingPosts ? <LoadingPosts/> : items}</Grid>
+      </Grid>
     )
   }
 }
 
-const mapStateToProps = (state) => (
-  console.log(state),
-  {
+const mapStateToProps = (state) => ({
   loadingPosts: state.post.loading,
-  list: state.post.list,
+  list: state.profile.posts,
   profile: state.profile.user,
   loadingProfile: state.profile.loading,
   auth: state.auth,

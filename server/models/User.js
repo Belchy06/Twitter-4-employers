@@ -19,7 +19,11 @@ const userSchema = new Schema({
   },
   followers: [],
   following: [],
-  likes: []
+  likes: [],
+  joinedDate: {
+    type: Date,
+    default: Date.now
+  },
 })
 
 module.exports = mongoose.model('User', userSchema)
