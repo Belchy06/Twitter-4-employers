@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { searchUsers } from '../../actions/searchActions'
 import Profile from '../Profile/SearchProfile'
 import Loading from '../Posts/LoadingPosts'
+import Grid from '@material-ui/core/Grid'
 
 class Profiles extends Component {
   componentDidMount() {
@@ -26,7 +27,10 @@ class Profiles extends Component {
       profiles =  (
         <div>
           <h1>Profiles:</h1>
-          { items }
+          <Grid container direction="row" alignContent="center" justify="center">
+            { items }
+          </Grid>
+          
         </div>
       )
     } else {
@@ -42,7 +46,8 @@ class Profiles extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => (
+  console.log(state),{
     user: state.auth.user,
     auth: state.auth,
     profiles: state.search.profiles,

@@ -29,7 +29,7 @@ class Home extends Component {
         <Grid container direction="row" sm={12}>
           <Hidden xsDown>
           <Grid item sm={5} md={3}>
-            <Grid container direction="column" className = { this.props.classes.sticky }>
+            <Grid container direction="column" style={{ marginTop: 30 }} className = { this.props.classes.sticky }>
  	            <Grid item alignContent="center">
                { isAuthenticated ? <Profile/> : '' }
               </Grid>
@@ -39,12 +39,12 @@ class Home extends Component {
             </Grid>
           </Grid>
           </Hidden>
-          <Grid item className = { this.props.classes.sticky } sm={6} md={6}>
+          <Grid item className = { this.props.classes.sticky } style={{ marginTop: 30 }} sm={6} md={6}>
             { isAuthenticated ? <ListPosts/> : <Login/> }
           </Grid>
           <Hidden smDown>
             <Grid item sm={3}>
-              <Grid container direction="column" className = { this.props.classes.sticky }>
+              <Grid container direction="column" className = { this.props.classes.sticky } style={{ marginTop: 30 }}>
                 <Grid item>
                 { isAuthenticated ? 'Ad' : '' }
                 </Grid>

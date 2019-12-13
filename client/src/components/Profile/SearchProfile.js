@@ -7,46 +7,69 @@ import Post from '../Posts/Post'
 import LoadingPosts from '../Posts/LoadingPosts'
 import Paper from '@material-ui/core/Paper'
 import Button from '@material-ui/core/Button'
+import Link from '@material-ui/core/Link'
+import Grid from '@material-ui/core/Grid'
 
 const styles = {
   handle: {
-    color: '#888',
+    color: '#8899a6',
     display: 'inline-block',
     '&:hover': {
       textDecoration: 'none'
-    }
-  },
-  following: {
-
-  },
-  followers: {
-
+    },
+    fontSize: 14,
+    fontWeight: 400
   },
   display: {
    marginTop: 5,
    marginBottom: 5
   },
   paper: {
-    padding: 8
-  },
-  detailBlock: {
-    display: 'flex'
+    padding: '1rem',
+    borderRadius: 0,
   },
   detail: {
-    marginRight: 5
+    marginRight: '1.5rem',
+    color: '#8899a6',
+    display: 'block',
+    textAlign: 'left',
+    fontWeight: 700,
+    fontSize: 12
+  },
+  profile: {
+    borderRadius: 0,
+    backgroundColor: '#15202b',
+    padding: '1rem',
+    border: '1px solid #8899a6' ,
+    display: 'block'
+  },
+  link: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 700
+  },
+  value: {
+    color: '#19cf86',
+    fontWeight: 700,
+    fontSize: 18,
+    textAlign: 'left'
   },
   btnBlock: {
+    display: 'block',
     float: 'right',
-    display: 'block'
   },
   btnFollow: {
     backgroundColor: 'inherit',
     color: '#78dd60',
+    border: '1px solid #78dd60',
     '&:hover': {
       color: '#fff',
       borderColor: '#78dd60',
       backgroundColor: '#78dd60'
-    }
+    },
+    fontSize: 12,
+    fontWeight: 700,
+    borderRadius: 25
   }
 }
 
@@ -73,19 +96,15 @@ class Profile extends Component {
     if(this.props.auth.isAuthenticated) {
       if(this.props.user.following.indexOf(this.props.profile._id) === -1) {
         followBtn = (
-          
-            <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleFollow }>
-              Follow
-            </Button>
-
+          <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleFollow }>
+            Follow
+          </Button>
         )
       } else {
         followBtn = (
-          <span className = { classes.btnBlock }>
-            <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleUnfollow }>
-              Unfollow
-            </Button>
-          </span>
+          <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleUnfollow }>
+            Unfollow
+          </Button>
         )
       }
     } 
@@ -94,18 +113,26 @@ class Profile extends Component {
     let profileInfo
     if(profile) {
       profileInfo = (
-        <Paper className = { classes.paper }>
-          <h1 className = { classes.display }>
-            { profile.login }
-            <span className = { classes.btnBlock }>{ followBtn }</span>
-          </h1>
-          <div className = { classes.handle }>@{ profile.handle }</div>
+        <Paper className = { classes.profile }>
+          <div>
+            <Link href = { `/profile/${profile._id}` } className = { classes.link }> 
+              { profile.login }         
+            </Link>
+            <span className = { classes.btnBlock }>
+              { followBtn }
+            </span>
+          </div>
+          <div className = { classes.handle }>
+            @{ profile.handle }
+          </div>
         </Paper>
         
       )
     }
     return (
-      <div>{ profileInfo }</div>
+      <Grid item sm={5} style={{ marginRight: '1rem' }}>
+        { profileInfo }
+      </Grid>
     )
   }
 }

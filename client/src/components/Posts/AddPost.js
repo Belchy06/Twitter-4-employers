@@ -102,6 +102,7 @@ class AddPost extends Component {
     }
     return (
       <Paper className = { classes.paper }>
+        
         <ClickAwayListener onClickAway = { this.handleClickAway }>
           <TextField
             multiline

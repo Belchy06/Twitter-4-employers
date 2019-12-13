@@ -37,12 +37,10 @@ const styles = {
     fontSize: 12
   },
   profile: {
-    //width: '100%',
     borderRadius: 0,
     backgroundColor: '#15202b',
     padding: '1rem',
     border: '1px solid #8899a6' ,
-    //marginRight: 10
   },
   link: {
     color: '#fff',

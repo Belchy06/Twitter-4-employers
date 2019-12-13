@@ -6,7 +6,7 @@ const Main = ({ children }) => (
    <div>
      <Header/>
      <Grid container justify="center" alignItems="center">
-      <Grid item xs={12} sm={12} style={{ marginTop: 30 }} alignContent="center">
+      <Grid item xs={12} sm={12}  alignContent="center">
         {children}
       </Grid>
      </Grid>
