@@ -15,7 +15,12 @@ const styles = {
   paper: {
 		padding: 10,
 		display: 'flex',
-		marginTop: 10,
+    marginTop: 0,
+    backgroundColor: '#15202b',
+    color: '#fff',
+    borderRadius: 0,
+    border: '1px solid #8899a6',
+    borderTop: 0
 	},
 	avatar: {
 		minWidth: 10,
@@ -26,32 +31,47 @@ const styles = {
 	},
 	time: {
 		marginTop: 5,
-		color: '#bbb',
+		color: '#8899a6',
     fontSize: 14,
-    paddingLeft: 5
+    paddingLeft: 5,
+    fontWeight: 400
   },
   handle: {
-    color: '#888',
+    color: '#8899a6',
     paddingLeft: 5,
     display: 'inline-block',
     '&:hover': {
       textDecoration: 'none'
-    }
+    },
+    fontSize: 14,
+    fontWeight: 400
   },
   userInfo: {
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
+    color: '#fff'
   },
   like: {
+    padding: 5,
+    color: '#8899a6',
+    '&:hover': {
+      color: '#e0245e'
+    }
+  },
+  likes: {
+    fontSize: 12,
+    fontWeight: 'bold',
     padding: 5
   },
   heart: {
-    '&:hover': {
-      color: '#ff007f'
-    }
+    fontSize: 18,
   },
   liked: {
-    color: '#F00'
+    color: '#e0245e',
+    padding: 5
+  },
+  link: {
+    fontWeight: '700',
   }
 }
 
@@ -114,28 +134,30 @@ class Post extends Component {
   render() {
     const { classes, post, user, auth } = this.props
     let socialIcons
-    console.log(this.props)
     if(auth.isAuthenticated) {
       if(post && user) {
         if(post.likes.indexOf(user.id) === -1) {
           //Like post
           socialIcons = (
-            <span>
-              { post.likes.length }
+            <span>      
               <IconButton className = { classes.like } onClick = { this.handleLike }>
-              <FavouriteBorderIcon className = { classes.heart }/>
+                <FavouriteBorderIcon className = { classes.heart }/>
+                <span className = { classes.likes }>
+                  { post.likes.length }
+                </span>
               </IconButton>
+              
             </span>
           )
         } else {
           //Unlike post
           socialIcons = (
-            <span>
-              { post.likes.length }
-              <IconButton className = { classes.like } onClick = { this.handleUnlike }>
-                <FavouriteIcon className = { classes.liked }/>
-              </IconButton>
-            </span>
+            <IconButton className = { classes.liked } onClick = { this.handleUnlike }>
+              <FavouriteIcon className = { classes.heart }/>
+              <span className = { classes.likes }>
+                { post.likes.length }
+              </span>
+            </IconButton>
           )
         }
       }
@@ -151,7 +173,7 @@ class Post extends Component {
           />
           <div> 
             <h3 className = { classes.userInfo }>
-              <Link href = { `/profile/${post.user.id}` }
+              <Link href = { `/profile/${post.user.id}` } style = {{ color: '#fff' }}
               className = { classes.link }> 
                 { post.user.login }
                 <span className = { classes.handle }>

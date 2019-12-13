@@ -5,6 +5,7 @@ import Login from './Auth/Login'
 import Profile from './Profile/HomeProfile'
 import Grid from '@material-ui/core/Grid'
 import { withStyles } from '@material-ui/core/styles'
+import Hidden from '@material-ui/core/Hidden';
 
 const styles = {
   'MuiGrid-root': {
@@ -26,29 +27,34 @@ class Home extends Component {
     return (
       <Grid container >
         <Grid container direction="row" sm={12}>
-          <Grid item sm={3}>
+          <Hidden xsDown>
+          <Grid item sm={5} md={3}>
             <Grid container direction="column" className = { this.props.classes.sticky }>
  	            <Grid item alignContent="center">
                { isAuthenticated ? <Profile/> : '' }
               </Grid>
               <Grid item alignContent="center">
-         	      Trends
+              { isAuthenticated ? 'Trends' : '' }
               </Grid>
             </Grid>
           </Grid>
-          <Grid item className = { this.props.classes.sticky } sm={6}>
+          </Hidden>
+          <Grid item className = { this.props.classes.sticky } sm={6} md={6}>
             { isAuthenticated ? <ListPosts/> : <Login/> }
           </Grid>
-          <Grid item sm={3}>
-            <Grid container direction="column" className = { this.props.classes.sticky }>
- 	            <Grid item>
-                Ad
-              </Grid>
-              <Grid item>
-         	      Who To Follow
+          <Hidden smDown>
+            <Grid item sm={3}>
+              <Grid container direction="column" className = { this.props.classes.sticky }>
+                <Grid item>
+                { isAuthenticated ? 'Ad' : '' }
+                </Grid>
+                <Grid item>
+                { isAuthenticated ? 'Who To Follow' : '' }
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Hidden>
+          
         </Grid>
       </Grid>
 

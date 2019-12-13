@@ -41,8 +41,6 @@ export default function ( state = initialState, action ) {
         }
       })
     case UNLIKE_POST:
-      console.log(state)
-      console.log(action.payload)
       index = state.list.findIndex(o => o._id === action.payload.postId)
       let totalLikes = state.list[index].likes.filter(item => item !== action.payload.userId)
       return update(state, {
