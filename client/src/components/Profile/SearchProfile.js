@@ -60,12 +60,10 @@ const styles = {
   },
   btnFollow: {
     backgroundColor: 'inherit',
-    color: '#78dd60',
-    border: '1px solid #78dd60',
+    color: '#19cf86',
+    border: '1px solid #19cf86',
     '&:hover': {
-      color: '#fff',
-      borderColor: '#78dd60',
-      backgroundColor: '#78dd60'
+      backgroundColor: '#1A383E'
     },
     fontSize: 12,
     fontWeight: 700,
@@ -94,7 +92,7 @@ class Profile extends Component {
     const profile = this.props.profile
     let followBtn
     if(this.props.auth.isAuthenticated) {
-      if(this.props.user.following.indexOf(this.props.profile._id) === -1) {
+      if(this.props.user.following.findIndex(profile => profile._id === this.props.profile._id) === -1) {
         followBtn = (
           <Button variant="outlined" type="" className = { classes.btnFollow } onClick = { this.handleFollow }>
             Follow

@@ -17,8 +17,8 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
-  followers: [],
-  following: [],
+  followers: [Schema.Types.Object],
+  following: [Schema.Types.Object],
   likes: [],
   joinedDate: {
     type: Date,

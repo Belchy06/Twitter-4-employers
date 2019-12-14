@@ -15,6 +15,7 @@ router.route('/register')
     }
 
     User.findOne({ email: req.body.email })
+    
       .then(user => {
         if(user) {
           errors.email = 'Email is already used!'
@@ -92,53 +93,72 @@ router.route('/follow')
   .post(
     passport.authenticate('jwt', { session:false }),
     (req, res) => {
-      User.findOneAndUpdate({
-        _id: req.user._id
-      }, {
-        $push: { following: req.body.userId }        
-      }, {
-        new: true
-      }).then(user => {
-        User.findOneAndUpdate({
-          _id: req.body.userId
-        }, {
-          $push: { followers: req.user.id }
-        }, { new: true })
-        .then(user => res.json({ userId: req.body.userId }))
+      User.findOne({ _id: req.body.userId })
+        .select("-password")
+        .then(user => {
+          User.findOneAndUpdate({
+            _id: req.user.id
+          }, {
+            $push: { following: user }        
+          }, {
+            new: true
+          })
+          .then(xx => {
+            User.findOne({ _id: req.user.id })
+              .select("-password")
+              .then(user => {
+                User.findOneAndUpdate({ 
+                  _id: req.body.userId 
+                }, {
+                  $push: { followers: user }
+                }, {
+                  new: true
+                })
+                .then(update => res.json({ userId: req.body.userId }))
+                .catch(err => console.log(err))
+              })
+          })
+        })
         .catch(err => console.log(err))
       })
-      .catch(err => console.log(err))
-  }
-)
 
 router.route('/unfollow')
-  .post(
-    passport.authenticate('jwt', { session:false }),
-    (req, res) => {
-      User.findOneAndUpdate({
-        _id: req.user._id
-      }, {
-        $pull: { following: req.body.userId }        
-      }, {
-        new: true
-      }).then(user => {
+.post(
+  passport.authenticate('jwt', { session:false }),
+  (req, res) => {
+    User.findOne({ _id: req.body.userId })
+      .then(user => {
         User.findOneAndUpdate({
-          _id: req.body.userId
+          _id: req.user.id
         }, {
-          $pull: { followers: req.user.id }
-        }, { new: true })
-        .then(user => res.json({ userId: req.body.userId }))
-        .catch(err => console.log(err))
+          $pull: { following: { _id: user._id }}        
+        }, {
+          new: true
+        })
+        .then(xx => {
+          User.findOne({ _id: req.user.id })
+            .then(user => {
+              User.findOneAndUpdate({ 
+                _id: req.body.userId 
+              }, {
+                $pull: { followers: { _id: user._id } }
+              }, {
+                new: true
+              })
+              .then(update => res.json({ userId: req.body.userId }))
+              .catch(err => console.log(err))
+            })
+        })
       })
       .catch(err => console.log(err))
-  }
-)
+    })
 
 router.route('/:id')
   .get((req, res) => {
     User.findById(req.params.id)
       .then(user => {
         if(user) {
+          console.log(user)
           return res.json({
             _id: user._id,
             email: user.email,
@@ -161,7 +181,7 @@ router.route('/:query')
     User.find({
       $or: [
         { handle: { "$regex": req.params.query, "$options": "i" } },
-        { login: { "$regex": req.params.query, "$options": "i" } }
+        { login: { "$regex": req.params.query, "$options": "i" } },
       ]
     })
     .select("-password")

@@ -45,7 +45,6 @@ const styles = {
     backgroundColor: '#10171e',
     padding: '1rem',
     'box-shadow': 'none'
-    //border: '1px solid #8899a6' ,
   },
   link: {
     color: '#fff',
@@ -76,18 +75,19 @@ class Profile extends Component {
 
   componentDidUpdate(oldProps) {
     if(this.props.auth.isAuthenticated) {
-      if(oldProps.user && oldProps.user.following !== this.props.user.following) {
-        this.props.refreshUserProfile(this.props.match.params.userId)
+      if(oldProps.user && (oldProps.user.following !== this.props.user.following || oldProps.user.followers !== this.props.user.followers)) {
+        console.log(this.props)
+        this.props.refreshUserProfile(this.props.profile._id)
       }
     } 
   }
 
   handleFollow () {
-    this.props.followUser(this.props.match.params.userId)
+    this.props.followUser(this.props.profile._id)
   }
 
   handleUnfollow () {
-    this.props.unfollowUser(this.props.match.params.userId)
+    this.props.unfollowUser(this.props.profile._id)
   }
 
   handleEdit () {
@@ -96,10 +96,9 @@ class Profile extends Component {
 
   render() {
     const { classes, loadingPosts, loadingProfile, list, auth, user, profile } = this.props
-
     let followBtn
     if(auth.isAuthenticated) {
-      if(user.following.indexOf(this.props.match.params.userId) === -1) {
+      if(user.following.findIndex(profile => profile._id === this.props.match.params.userId) === -1) {
         if(user.id === this.props.match.params.userId){
           followBtn = (
             <span className = { classes.btnBlock }>
@@ -143,6 +142,7 @@ class Profile extends Component {
           <div className = { classes.handle }>
               @{ profile.handle }
             </div>
+            { followBtn }
         </Paper>
 
       )
@@ -150,13 +150,14 @@ class Profile extends Component {
     return (
       <Grid container>
         <Grid item sm={4}>{ loadingProfile ? <div>Loading...</div> : profileInfo }</Grid>
-        <Grid item sm={7}>{ loadingPosts ? <LoadingPosts/> : items}</Grid>
+        <Grid item sm={7}>{ loadingPosts ? <LoadingPosts/> : <div style={{paddingTop: '1rem'}}>{items}</div>}</Grid>
       </Grid>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => (
+  console.log(state),{
   loadingPosts: state.post.loading,
   list: state.profile.posts,
   profile: state.profile.user,

@@ -32,15 +32,15 @@ const styles = {
     }
   },
   root: {
-    width: 'calc(100% - 10px)',
+    width: 'calc(100% - 20px)',
     overflow: 'hidden',
-    borderRadius: 4,
-    padding: 5,
+    borderRadius: 8,
+    padding: 10,
     backgroundColor: '#15202b',
     '& label': {
       color: '#8899a6',
-      paddingLeft: 5,
-      marginTop: -10
+      paddingLeft: 10,
+      marginTop: -7
     },
     '& label.Mui-focused': {
       display: 'none'

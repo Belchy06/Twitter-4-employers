@@ -47,7 +47,7 @@ export const followUser = (userId) => dispatch => {
   axios.post(SERVER_URL + 'api/users/follow', { userId })
     .then(res => dispatch({
       type: FOLLOW,
-      payload: res.data.userId
+      payload: res.data
     }))
     .catch(err => console.log(err))
 }
@@ -56,7 +56,7 @@ export const unfollowUser = (userId) => dispatch => {
   axios.post(SERVER_URL + 'api/users/unfollow', { userId })
     .then(res => dispatch({
       type: UNFOLLOW,
-      payload: res.data.userId
+      payload: res.data
     }))
     .catch(err => console.log(err))
 }

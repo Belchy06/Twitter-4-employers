@@ -1,7 +1,7 @@
 export const GET_ERRORS = 'GET_ERRORS'
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const SERVER_URL = 'http://localhost:5000/'
-export const APP_NAME = 'EmployMe'
+export const APP_NAME = 'BATTER'
 export const LOADING_POSTS = 'LOADING_POSTS'
 export const GET_POSTS = 'GET_POSTS'
 export const ADD_POST = 'ADD_POST'

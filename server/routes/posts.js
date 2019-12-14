@@ -21,6 +21,30 @@ router.route('/add')
         .catch(err => console.log(err))
 })
 
+router.route('/comment')
+  .post(passport.authenticate('jwt', { session: false }), 
+    (req, res) => {
+      const text = req.body.text.trim()
+      const newPost = new Post({
+        user: {
+          id: req.user.id,
+          login: req.user.login,
+          handle: req.user.handle
+        },
+        text: text,
+        likes: []
+      })
+      Post.findOneAndUpdate({
+        _id: req.body.postId
+      }, {
+        $push: { replies: newPost }
+      }, {
+        new: true
+      })
+      .then(post => res.json(post))
+      .catch(err => console.log(err))        
+})
+
 router.route('/')
   .get((req, res) => {
     Post.find()

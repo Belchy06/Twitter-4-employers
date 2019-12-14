@@ -14,7 +14,8 @@ const postSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  likes: []
+  likes: [],
+  replies: []
 })
 
 module.exports = mongoose.model('Post', postSchema)

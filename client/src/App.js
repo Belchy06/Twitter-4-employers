@@ -12,6 +12,8 @@ import Main from './components/Layout/Main'
 import Profile from './components/Profile/Profile'
 import NotFound from './components/404'
 import SearchResults from './components/Search/SearchResults'
+import Following from './components/Profile/Following'
+import Followers from './components/Profile/Followers'
 
 
 import { logoutUser, getCurrentUser } from './actions/authActions'
@@ -39,8 +41,11 @@ class App extends Component {
                 <Route exact path="/" component={Home}/>
                 <Route path="/login" component={Login}/>
                 <Route path="/signup" component={Register}/>
-                <Route path="/profile/:userId" component={Profile}/>
+                <Route path="/profile/:userId/following" component={Following}/>
+                <Route path="/profile/:userId/followers" component={Followers}/>
+                <Route exact path="/profile/:userId" component={Profile}/>
                 <Route path="/search/:query" component={SearchResults}/>
+                
                 <Route component={NotFound}/>
               </Switch>
             </Main>

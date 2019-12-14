@@ -42,7 +42,7 @@ const styles = {
     padding: '1rem',
     border: '1px solid #8899a6' ,
   },
-  link: {
+  login: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 700
@@ -52,6 +52,15 @@ const styles = {
     fontWeight: 700,
     fontSize: 18,
     textAlign: 'left'
+  },
+  link: {
+    textDecoration: 'none',
+    color: '#8899a6',
+    '&:hover': {
+      textDecoration: 'none',
+      color: '#19cf86',
+      transition: '.25s ease-in-out'
+    }
   }
 }
 
@@ -67,7 +76,7 @@ class Profile extends Component {
     if(profile) {
       profileInfo = (
         <Paper className = { classes.profile }>
-          <Link href = { `/profile/${profile._id}` } className = { classes.link }> 
+          <Link href = { `/profile/${profile._id}` } className = { classes.login }> 
             { profile.login }
             <span className = { classes.handle }>
               @{ profile.handle }
@@ -75,28 +84,34 @@ class Profile extends Component {
           </Link>
           <div className = { classes.detailBlock }>
             <div className = { classes.detail }>
-              <span> Posts</span>
-              <div className = { classes.value }>
-                { posts.length }
-              </div>              
+              <Link href={`/profile/${profile._id}`} className = { classes.link }>
+                <span> Posts</span>
+                <div className = { classes.value }>
+                  { posts.length }
+                </div>
+              </Link>              
             </div>
             <div className = { classes.detail }>
-              <span className = { classes.followers }>
-                Followers
-              </span>
-              <div className = { classes.value }>
-                { profile.followers.length }
-              </div>
+              <Link href={`/profile/${profile._id}/followers`} className = { classes.link }>
+                <span className = { classes.followers }>
+                  Followers
+                </span>
+                <div className = { classes.value }>
+                  { profile.followers.length }
+                </div>
+              </Link>
             </div>
 
 
             <div className = { classes.detail }>
-              <span className = { classes.following }>
-                Following
-              </span>
-              <div className = { classes.value }>
-                { profile.following.length }
-              </div>
+            <Link href={`/profile/${profile._id}/following`} className = { classes.link }>
+                <span className = { classes.following }>
+                  Following
+                </span>
+                <div className = { classes.value }>
+                  { profile.following.length }
+                </div>
+              </Link>
             </div>
           </div>
         </Paper>

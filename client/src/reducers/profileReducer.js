@@ -19,6 +19,7 @@ export default function ( state = intialState, action) {
         loading: true
       }
       case GET_PROFILE:
+        console.log('getting profile')
         return {
           ...state,
           loading: false,
